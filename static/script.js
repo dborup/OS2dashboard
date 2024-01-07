@@ -24,7 +24,7 @@ var customIcons = {
 // Initialize the Leaflet map centered on Aarhus, Denmark
 var cityMap = L.map('city-map').setView([56.1629, 10.2039], 12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 17,
     attribution: '© OpenStreetMap contributors'
 }).addTo(cityMap);
 
