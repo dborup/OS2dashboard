@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+
+<div id="dashboard-container">
+    <div id="city-map"></div> <!-- Map container -->
+    <div id="event-list">
+        <div id="event-list-header">
+            <h2>Computer Events</h2>
+        </div>
+        <div id="event-list-content">
+            <!-- Event list content will be added here using JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
