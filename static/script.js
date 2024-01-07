@@ -22,11 +22,14 @@ var customIcons = {
 };
 
 // Initialize the Leaflet map centered on Aarhus, Denmark
-var cityMap = L.map('city-map').setView([56.1629, 10.2039], 10);
+var cityMap = L.map('city-map').setView([56.1629, 10.2039], 12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '© OpenStreetMap contributors'
 }).addTo(cityMap);
+
+// Create an array to store marker coordinates
+var markerCoordinates = [];
 
 // Function to process data and organize by severity and monitoring rule
 function processEventData(data) {
@@ -76,6 +79,8 @@ function updateCityMapMarkers() {
 
             const processedData = processEventData(data);
 
+            markerCoordinates = []; // Clear the markerCoordinates array
+
             Object.entries(processedData).forEach(([locationKey, locationInfo]) => {
                 const [latitude, longitude] = locationKey.split('_');
                 const icon = customIcons[locationInfo.level] || new L.Icon.Default();
@@ -86,18 +91,28 @@ function updateCityMapMarkers() {
                     popupContent += `<strong>${rule}</strong>:<br>${eventDetails}<br><hr>`;
                 });
 
-                L.marker([parseFloat(latitude), parseFloat(longitude)], { icon: icon })
+                const marker = L.marker([parseFloat(latitude), parseFloat(longitude)], { icon: icon })
                     .addTo(cityMap)
                     .bindPopup(popupContent, { maxHeight: 200 });
+
+                // Add the marker's coordinates to the array
+                markerCoordinates.push(marker.getLatLng());
             });
+
+            // Use fitBounds to zoom and pan the map to fit all marker coordinates
+            if (markerCoordinates.length > 0) {
+                var bounds = L.latLngBounds(markerCoordinates);
+                cityMap.fitBounds(bounds);
+            } else {
+                // If there are no markers, set a default zoom and center
+                cityMap.setView([56.1629, 10.2039], 12);
+            }
         })
         .catch(error => console.error('Error:', error));
 }
 
 updateCityMapMarkers();
 setInterval(updateCityMapMarkers, 60000); // Update every 60 seconds
-
-// Add this code to your script.js file
 
 // Function to fetch and display event data
 function fetchAndDisplayEventData() {
