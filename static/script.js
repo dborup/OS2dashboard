@@ -139,31 +139,62 @@ function fetchAndDisplayEventData() {
                 });
             });
 
-            // Loop through locations and their events to create HTML elements
-            for (const locationName in eventsByLocation) {
-                const locationData = eventsByLocation[locationName];
+            // Check if there are no events
+            if (Object.keys(eventsByLocation).length === 0) {
+                const noEventsMessage = document.createElement('p');
+                // Updated text to display a random message every hour
+                var messages = [
+                    "Absence of events is an opportunity for reflection.",
+                    "In the stillness, find your own rhythm.",
+                    "Embrace the calm before the storm.",
+                    "Silence can be a powerful statement.",
+                    "Enjoy the serenity of this moment.",
+                    "The silence holds its own secrets; listen closely.",
+                    "When life gives you an empty canvas, paint your own masterpiece.",
+                    "Sometimes the quiet moments are the loudest.",
+                    "In the absence of events, make your own adventures.",
+                    "Emptiness is not nothingness; rather, it is the state of potential for everything.",
+                    "Let the calm empower you for what's to come.",
+                    "Quiet moments can be a canvas for your thoughts.",
+                    "Embrace the tranquility of the moment.",
+                    "The silence holds its own secrets; listen closely.",
+                    "Silence can be a powerful statement."
+                ];
+                var randomIndex = Math.floor(Math.random() * messages.length);
+    
+                // Apply CSS styles to make the text bigger and bold
+                noEventsMessage.style.fontSize = "40px"; // Adjust the font size as needed
+                noEventsMessage.style.fontWeight = "bold"; // Make the text bold
+                
+                noEventsMessage.textContent = messages[randomIndex];
+                eventListContent.appendChild(noEventsMessage);
+            } else {
+                // Loop through locations and their events to create HTML elements
+                for (const locationName in eventsByLocation) {
+                    const locationData = eventsByLocation[locationName];
 
-                const locationDiv = document.createElement('div');
-                locationDiv.classList.add('location');
+                    const locationDiv = document.createElement('div');
+                    locationDiv.classList.add('location');
 
-                const locationHeader = document.createElement('h3');
-                locationHeader.textContent = `${locationName}`;
-                locationDiv.appendChild(locationHeader);
+                    const locationHeader = document.createElement('h3');
+                    locationHeader.textContent = `${locationName}`;
+                    locationDiv.appendChild(locationHeader);
 
-                for (const rule in locationData) {
-                    const ruleCount = locationData[rule];
+                    for (const rule in locationData) {
+                        const ruleCount = locationData[rule];
 
-                    const ruleDiv = document.createElement('div');
-                    ruleDiv.classList.add('event-rule');
+                        const ruleDiv = document.createElement('div');
+                        ruleDiv.classList.add('event-rule');
 
-                    const ruleHeader = document.createElement('h4');
-                    ruleHeader.textContent = `${rule} Count: ${ruleCount}`;
-                    ruleDiv.appendChild(ruleHeader);
+                        const ruleHeader = document.createElement('h4');
+                        ruleHeader.textContent = `${rule} Count: ${ruleCount}`;
+                        ruleDiv.appendChild(ruleHeader);
 
-                    locationDiv.appendChild(ruleDiv);
+                        locationDiv.appendChild(ruleDiv);
+                    }
+
+                    eventListContent.appendChild(locationDiv);
                 }
-
-                eventListContent.appendChild(locationDiv);
             }
         })
         .catch(error => console.error('Error:', error));
@@ -171,5 +202,5 @@ function fetchAndDisplayEventData() {
 
 // Call the fetchAndDisplayEventData function to populate the event list
 fetchAndDisplayEventData();
-// Update the event list every 60 seconds (adjust the interval as needed)
-setInterval(fetchAndDisplayEventData, 60000); // Update every 60 seconds
+// Update the event list every XXX (adjust the interval as needed)
+setInterval(fetchAndDisplayEventData, 300000); // Update every 5min
